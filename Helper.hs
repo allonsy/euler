@@ -3,14 +3,26 @@ module Helper where
 import Data.Array
 import Data.Int
 
-isPrime :: Int -> Bool
+isPrime :: Int64 -> Bool
 isPrime 1 = False
 isPrime n = checkDivisors 2 where
-  squareRoot = floor $ sqrt $ fromIntegral n
+  root = squareRoot n
   checkDivisors k
-    | k > squareRoot = True
+    | k > root = True
     | n `mod` k == 0 = False
     | otherwise = checkDivisors (k+1)
+
+divisors :: Int64 -> [Int64]
+divisors n = divisors' 1 n where
+  root = squareRoot n
+  divisors' k n
+    | k > root = []
+    | n `mod` k == 0 = if k*k /= n then k : n `quot` k :  divisors' (k+1) n else k :  divisors' (k+1) n
+    | otherwise = divisors' (k+1) n
+
+squareRoot :: Int64 -> Int64
+squareRoot n = floor $ sqrt $ fromIntegral n
+
 
 
 arrayify :: [[Int64]] -> Array (Int64, Int64) Int64
