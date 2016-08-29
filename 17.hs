@@ -23,21 +23,29 @@ numberToString 18 = "eighteen"
 numberToString 19 = "nineteen"
 numberToString 20 = "twenty"
 numberToString 30 = "thirty"
-numberToString 40 = "fourty"
+numberToString 40 = "forty"
 numberToString 50 = "fifty"
 numberToString 60 = "sixty"
 numberToString 70 = "seventy"
 numberToString 80 = "eighty"
 numberToString 90 = "ninety"
-numberToString 100 = "hundred"
-numberToString 1000 = "thousand"
+numberToString 1000 = "onethousand"
+numberToString n = translate (breakUpNumber n) where
+  translate [tens, ones]
+    | ones /= 0 = numberToString (tens*10) ++ numberToString ones
+    | otherwise = numberToString (tens*10)
+  translate [hundreds, tens, ones]
+    | tens == 0 && ones == 0 = numberToString hundreds ++ "hundred"
+    | tens == 0 = numberToString hundreds ++ "hundredand" ++ numberToString ones
+    | otherwise = numberToString hundreds ++ "hundredand" ++ numberToString (tens*10 + ones)
 
 breakUpNumber :: Int -> [Int]
-breakUpNumber =
-  strRep = map (\c -> [c]) $ show breakUpNumber
+breakUpNumber n = map read strRep where
+  strRep = map (\c -> [c]) $ show n
 
 
 
 main :: IO ()
 main = do
-  print $ "hello"
+  let sumLength = sum $ map length $ map numberToString [1..1000]
+  print $ sumLength
