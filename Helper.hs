@@ -20,7 +20,7 @@ divisors n = divisors' 1 n where
     | n `mod` k == 0 = if k*k /= n then k : n `quot` k :  divisors' (k+1) n else k :  divisors' (k+1) n
     | otherwise = divisors' (k+1) n
 
-properDivisors :: Int64 -> [Int64]
+properDivisors ::  Int64 -> [Int64]
 properDivisors n = divisors' 2 n where
   root = squareRoot n
   divisors' k n
