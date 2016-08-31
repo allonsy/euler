@@ -5,12 +5,14 @@ import Data.Int
 
 isPrime :: Integral a => a -> Bool
 isPrime 1 = False
-isPrime n = checkDivisors 2 where
-  root = squareRoot n
-  checkDivisors k
-    | k > root = True
-    | n `mod` k == 0 = False
-    | otherwise = checkDivisors (k+1)
+isPrime n
+  | n <= 0 = False
+  | otherwise = checkDivisors 2 where
+    root = squareRoot n
+    checkDivisors k
+      | k > root = True
+      | n `mod` k == 0 = False
+      | otherwise = checkDivisors (k+1)
 
 divisors :: Integral a => a -> [a]
 divisors n = divisors' 1 n where
