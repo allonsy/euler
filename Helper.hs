@@ -3,7 +3,7 @@ module Helper where
 import Data.Array
 import Data.Int
 
-isPrime :: Int64 -> Bool
+isPrime :: Integral a => a -> Bool
 isPrime 1 = False
 isPrime n = checkDivisors 2 where
   root = squareRoot n
@@ -12,7 +12,7 @@ isPrime n = checkDivisors 2 where
     | n `mod` k == 0 = False
     | otherwise = checkDivisors (k+1)
 
-divisors :: Int64 -> [Int64]
+divisors :: Integral a => a -> [a]
 divisors n = divisors' 1 n where
   root = squareRoot n
   divisors' k n
@@ -20,7 +20,7 @@ divisors n = divisors' 1 n where
     | n `mod` k == 0 = if k*k /= n then k : n `quot` k :  divisors' (k+1) n else k :  divisors' (k+1) n
     | otherwise = divisors' (k+1) n
 
-properDivisors ::  Int64 -> [Int64]
+properDivisors :: Integral a => a -> [a]
 properDivisors n = divisors' 2 n where
   root = squareRoot n
   divisors' k n
@@ -28,15 +28,15 @@ properDivisors n = divisors' 2 n where
     | n `mod` k == 0 = if k*k /= n then k : n `quot` k :  divisors' (k+1) n else k :  divisors' (k+1) n
     | otherwise = divisors' (k+1) n
 
-squareRoot :: Int64 -> Int64
+squareRoot :: Integral a => a -> a
 squareRoot n = floor $ sqrt $ fromIntegral n
 
 
 
-arrayify :: [[Int64]] -> Array (Int64, Int64) Int64
+arrayify :: (Integral a, Ix a) => [[a]] -> Array (a, a) a
 arrayify rows = array ((0,0), (numRows - 1, numColumns - 1)) (concat columnTransform) where
   rowTransform = map (zip [0..numColumns - 1]) rows
-  columnTransform = zipWith (\rowNum row -> map (\(colNum, colVal) -> ((rowNum, colNum), colVal)) row) [0..numRows - 1] rowTransform ::[[((Int64, Int64), Int64)]]
+  columnTransform = zipWith (\rowNum row -> map (\(colNum, colVal) -> ((rowNum, colNum), colVal)) row) [0..numRows - 1] rowTransform
 
   numColumns = fromIntegral $ length (head rows)
   numRows = fromIntegral $ length rows
